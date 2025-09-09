@@ -30,17 +30,20 @@ app.post('/api/chat', async (req: Request, res: Response) => {
     return;
   }
 
-  const { prompt, conversationsId } = req.body;
-
-  const responses = await client.responses.create({
-    model: 'gpt-4o-mini',
-    input: prompt,
-    temperature: 0.2,
-    max_output_tokens: 100,
-    previous_response_id: conversations.get(conversationsId),
-  });
-  conversations.set(conversationsId, responses.id);
-  res.json({ message: responses.output_text });
+  try {
+    const { prompt, conversationsId } = req.body;
+    const responses = await client.responses.create({
+      model: 'gpt-4o-mini!',
+      input: prompt,
+      temperature: 0.2,
+      max_output_tokens: 100,
+      previous_response_id: conversations.get(conversationsId),
+    });
+    conversations.set(conversationsId, responses.id);
+    res.json({ message: responses.output_text });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch response from OpenAI' });
+  }
 });
 
 app.listen(port, () => {
