@@ -3,6 +3,7 @@ import type { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
 import z from 'zod';
+import { conversationRepository } from './repositories/conversation.repository';
 
 dotenv.config();
 const client = new OpenAI({
@@ -11,9 +12,6 @@ const client = new OpenAI({
 const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000;
-
-// 使用 Map 保存 conversationId 与 lastResponseId 的映射
-const conversations = new Map<string, string>();
 
 const schema = z.object({
   prompt: z
@@ -33,13 +31,14 @@ app.post('/api/chat', async (req: Request, res: Response) => {
   try {
     const { prompt, conversationsId } = req.body;
     const responses = await client.responses.create({
-      model: 'gpt-4o-mini!',
+      model: 'gpt-4o-mini',
       input: prompt,
       temperature: 0.2,
       max_output_tokens: 100,
-      previous_response_id: conversations.get(conversationsId),
+      previous_response_id:
+        conversationRepository.getLastResponseId(conversationsId),
     });
-    conversations.set(conversationsId, responses.id);
+    conversationRepository.setLastResponseId(conversationsId, responses.id);
     res.json({ message: responses.output_text });
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch response from OpenAI' });
