@@ -20,11 +20,14 @@ type Message = {
 
 const ChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [isBotTyping, setIsBotTyping] = useState(false);
   const conversationId = useRef(crypto.randomUUID());
   const { register, handleSubmit, reset, formState } = useForm<FormData>();
 
   const onSubmit = async ({ prompt }: FormData) => {
     setMessages((prev) => [...prev, { content: prompt, role: 'user' }]);
+    setIsBotTyping(true);
+
     reset();
 
     const { data } = await axios.post<ChatResponse>('/api/chat', {
@@ -32,12 +35,12 @@ const ChatBot = () => {
       conversationId: conversationId.current,
     });
     setMessages((prev) => [...prev, { content: data.message, role: 'bot' }]);
-    // setMessages([...messages, data.message]);
+    setIsBotTyping(false);
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault(); // 阻止默认提交 → 改为手动调用 handleSubmit(onSubmit)()，这样可以走自己定义的表单校验和提交逻辑，而不是浏览器的默认逻辑。
+      e.preventDefault();
       handleSubmit(onSubmit)();
     }
   };
@@ -57,6 +60,13 @@ const ChatBot = () => {
             <ReactMarkdown>{message.content}</ReactMarkdown>
           </p>
         ))}
+        {isBotTyping && (
+          <div className="flex self-start gap-1 px-3 py-3 bg-gray-200 rounded-xl">
+            <div className="w-2 h-2 rounded-full bg-gray-800 animate-pulse"></div>
+            <div className="w-2 h-2 rounded-full bg-gray-800 animate-pulse [animation-delay:0.2s]"></div>
+            <div className="w-2 h-2 rounded-full bg-gray-800 animate-pulse [animation-delay:0.4s]"></div>
+          </div>
+        )}
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
