@@ -12,21 +12,25 @@ type ChatResponse = {
   message: string;
 };
 
+type Message = {
+  content: string;
+  role: 'user' | 'bot';
+};
+
 const ChatBot = () => {
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const conversationId = useRef(crypto.randomUUID());
   const { register, handleSubmit, reset, formState } = useForm<FormData>();
 
   const onSubmit = async ({ prompt }: FormData) => {
-    setMessages((prev) => [...prev, prompt]); // prev 是 React 在调用更新函数时注入的最新 state。函数式更新才是安全的
-    // setMessages(([...message, prompt]); // 这里的 messages 可能已经是过时的值，导致“覆盖掉”之前的更新。
+    setMessages((prev) => [...prev, { content: prompt, role: 'user' }]);
     reset();
 
     const { data } = await axios.post<ChatResponse>('/api/chat', {
       prompt,
       conversationId: conversationId.current,
     });
-    setMessages((prev) => [...prev, data.message]);
+    setMessages((prev) => [...prev, { content: data.message, role: 'bot' }]);
     // setMessages([...messages, data.message]);
   };
 
@@ -39,9 +43,18 @@ const ChatBot = () => {
 
   return (
     <div>
-      <div>
+      <div className="flex flex-col gap-3 mb-10">
         {messages.map((message, index) => (
-          <p key={index}>{message}</p>
+          <p
+            key={index}
+            className={`px-3 py-1 rounded-xl ${
+              message.role === 'user'
+                ? 'bg-blue-600 text-white self-end'
+                : 'bg-gray-100 text-black self-start'
+            }`}
+          >
+            {message.content}
+          </p>
         ))}
       </div>
       <form
