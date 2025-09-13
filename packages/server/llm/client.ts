@@ -20,7 +20,7 @@ type GenerateTextResult = {
 
 export const llmClient = {
   async generateText({
-    model = 'gpt-4.1',
+    model = 'gpt-4o-mini',
     prompt,
     instructions,
     temperature = 0.2,
