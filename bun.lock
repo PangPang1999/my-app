@@ -56,6 +56,7 @@
     "packages/server": {
       "name": "server",
       "dependencies": {
+        "@huggingface/inference": "^4.8.0",
         "@prisma/client": "^6.16.1",
         "dayjs": "^1.11.18",
         "dotenv": "^17.2.2",
@@ -180,6 +181,12 @@
     "@eslint/object-schema": ["@eslint/object-schema@2.1.6", "https://registry.npmmirror.com/@eslint/object-schema/-/object-schema-2.1.6.tgz", {}, "sha512-RBMg5FRL0I0gs51M/guSAj5/e14VQ4tpZnQNWwuDT66P14I43ItmPfIZRhO9fUVIPOAQXU47atlywZ/czoqFPA=="],
 
     "@eslint/plugin-kit": ["@eslint/plugin-kit@0.3.5", "https://registry.npmmirror.com/@eslint/plugin-kit/-/plugin-kit-0.3.5.tgz", { "dependencies": { "@eslint/core": "^0.15.2", "levn": "^0.4.1" } }, "sha512-Z5kJ+wU3oA7MMIqVR9tyZRtjYPr4OC004Q4Rw7pgOKUOKkJfZ3O24nz3WYfGRpMDNmcOi3TwQOmgm7B7Tpii0w=="],
+
+    "@huggingface/inference": ["@huggingface/inference@4.8.0", "https://registry.npmmirror.com/@huggingface/inference/-/inference-4.8.0.tgz", { "dependencies": { "@huggingface/jinja": "^0.5.1", "@huggingface/tasks": "^0.19.45" } }, "sha512-Eq98EAXqYn4rKMfrbEXuhc3IjKfaeIO6eXNOZk9xk6v5akrIWRtd6d1h0fjAWyX4zRbdUpXRh6MvsqXnzGvXCA=="],
+
+    "@huggingface/jinja": ["@huggingface/jinja@0.5.1", "https://registry.npmmirror.com/@huggingface/jinja/-/jinja-0.5.1.tgz", {}, "sha512-yUZLld4lrM9iFxHCwFQ7D1HW2MWMwSbeB7WzWqFYDWK+rEb+WldkLdAJxUPOmgICMHZLzZGVcVjFh3w/YGubng=="],
+
+    "@huggingface/tasks": ["@huggingface/tasks@0.19.45", "https://registry.npmmirror.com/@huggingface/tasks/-/tasks-0.19.45.tgz", {}, "sha512-lM3QOgbfkGZ5gAZOYWOmzMM6BbKcXOIHjgnUAoymTdZEcEcGSr0vy/LWGEiK+vBXC4vU+sCT+WNoA/JZ8TEWdA=="],
 
     "@humanfs/core": ["@humanfs/core@0.19.1", "https://registry.npmmirror.com/@humanfs/core/-/core-0.19.1.tgz", {}, "sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA=="],
 
